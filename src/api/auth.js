@@ -1,13 +1,28 @@
 import instance from ".";
-
+import { storeToken } from "./storage";
 const login = async (userInfo) => {
-  const { data } = await instance.post("/auth/login", userInfo);
-  return data;
+  try {
+    const { data } = await instance.post("/auth/login", userInfo);
+    storeToken(data.token); // <--- This
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
+
 const register = async (userInfo) => {
-  const { data } = await instance.post("/auth/register", userInfo);
-  return data;
+  try {
+		// This is for seding the request with files 
+    const formData = new FormData();
+    for (const key in userInfo) formData.append(key, userInfo[key]);
+		// END
+    const { data } = await instance.post("/auth/register", formData);
+    storeToken(data.token);  // <--- This
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const me = async () => {
@@ -19,5 +34,6 @@ const getAllUsers = async () => {
   const { data } = await instance.get("/auth/users");
   return data;
 };
+
 
 export { login, register, me, getAllUsers };

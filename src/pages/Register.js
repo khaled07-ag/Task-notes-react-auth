@@ -44,7 +44,7 @@ const Register = () => {
             <input
               type="text"
               id="name"
-              name="name"
+              name="username"
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
